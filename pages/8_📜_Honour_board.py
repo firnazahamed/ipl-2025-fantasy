@@ -10,7 +10,7 @@ honour_board = pd.DataFrame(
         "Season": seasons,
         "Winner": ["Ashkay", "Mabbu", "Saju", "Saju", "Firi", "Firi", "Vaithy"],
         "Runner-up": ["Mabbu", "Bhar", "Siddhu", "Srini", "Bhar", "Srini", "Ashkay"],
-        "Second runner-up": ["Bhar", "Shar", "Srini", "Firi", "Saju", "Abhi"],
+        "Second runner-up": ["Bhar", "Shar", "Srini", "Firi", "Saju", "Ashkay", "Abhi"],
     }
 ).set_index("Season")
 
