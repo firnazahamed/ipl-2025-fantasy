@@ -287,6 +287,6 @@ player_id_dict = {
 }
 
 service_account_credentials = "credentials/cricinfo-273202-a7420ddc1abd.json"
-squads_spreadsheet_url = "https://docs.google.com/spreadsheets/d/1KWLM_0V4QMZZrM62wRLAdY_5TkCg37nt3cFR8Mx67zU/"
-unsold_spreadsheet_url = "https://docs.google.com/spreadsheets/d/1TaBtVrQYrHdaYGrAGlA61fhs6e7bYVctaQ_CD8v1nKo/"
-trades_spreadsheet_url = "https://docs.google.com/spreadsheets/d/1ETA4v6Lb6cIWaR1WPaBhwEIet2Og7yipSL4WLrNh7TU/"
+squads_spreadsheet_url = "https://docs.google.com/spreadsheets/d/10_pC20ejAGskLCxZQzMBmKGJR0V_Uo7oUQB8g5wkM6s/"
+unsold_spreadsheet_url = "https://docs.google.com/spreadsheets/d/1fjAAHr11yVIqSDvf6d1ifUx1OlrbamC3Q4pFtNfd7kY/"
+trades_spreadsheet_url = "https://docs.google.com/spreadsheets/d/1ZmtYLXSHLK_a1VBYFIFnV4aB8nSbrgz12kDWLegvHeQ/"
