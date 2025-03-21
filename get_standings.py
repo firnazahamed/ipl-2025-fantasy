@@ -63,6 +63,14 @@ def create_score_df(
         int(player_id_dict[player.strip()]) for player in score_df["Player"]
     ]
 
+    # season_points_df will aggregate points for all players without captaincy multiplier
+    season_points_df = (
+        pd.DataFrame.from_dict(player_id_dict, orient="index")
+        .reset_index()
+        .rename(columns={"index": "Player", 0: "Player_id"})
+        .astype({"Player_id": "int"})
+    )
+
     match_ids = [sc.split("_")[0] for sc in scorecards.keys()]
     for match_id in match_ids:
         for k, v in weeks.items():
@@ -131,6 +139,15 @@ def create_score_df(
             score_df.loc[:, ~score_df.columns.duplicated()].drop_duplicates().fillna("")
         )
 
+        season_points_df = season_points_df.merge(
+            scorecard[["Player_id", "total_points"]], on=["Player_id"], how="left"
+        ).rename(columns={"total_points": match_id + "_points"})
+        season_points_df = (
+            season_points_df.loc[:, ~season_points_df.columns.duplicated()]
+            .drop_duplicates()
+            .fillna("")
+        )
+
     game_cols = [col for col in score_df.columns if col.endswith("_points")]
     game_map = {
         game_cols[game]: "Match_" + str(game + 1) for game in range(len(game_cols))
@@ -140,6 +157,17 @@ def create_score_df(
         loc=3,
         column="Overall",
         value=score_df[[c for c in score_df.columns if c.startswith("Match")]]
+        .replace({"": 0})
+        .sum(axis=1),
+    )
+
+    season_points_df = season_points_df.rename(columns=game_map)
+    season_points_df.insert(
+        loc=2,
+        column="Overall",
+        value=season_points_df[
+            [c for c in season_points_df.columns if c.startswith("Match")]
+        ]
         .replace({"": 0})
         .sum(axis=1),
     )
@@ -196,11 +224,18 @@ def create_score_df(
         standings_df.reset_index(),
         weekly_points_df,
         agg_points_df,
+        season_points_df,
     )
 
 
 def save_outputs(
-    score_df, sum_df, cumsum_df, standings_df, weekly_points_df, agg_points_df
+    score_df,
+    sum_df,
+    cumsum_df,
+    standings_df,
+    weekly_points_df,
+    agg_points_df,
+    season_points_df,
 ):
 
     # Save output files locally
@@ -210,6 +245,7 @@ def save_outputs(
     standings_df.to_csv("./Outputs/standings_df.csv", header=True, index=False)
     weekly_points_df.to_csv("./Outputs/weekly_points_df.csv", header=True, index=False)
     agg_points_df.to_csv("./Outputs/agg_points_df.csv", header=True, index=False)
+    season_points_df.to_csv("./Outputs/season_points_df.csv", header=True, index=False)
 
     # Save output files to GCS
     upload_df_to_gcs(score_df, f"Outputs/score_df.csv", bucket_name)
@@ -218,6 +254,7 @@ def save_outputs(
     upload_df_to_gcs(standings_df, f"Outputs/standings_df.csv", bucket_name)
     upload_df_to_gcs(weekly_points_df, f"Outputs/weekly_points_df.csv", bucket_name)
     upload_df_to_gcs(agg_points_df, f"Outputs/agg_points_df.csv", bucket_name)
+    upload_df_to_gcs(season_points_df, f"Outputs/season_points_df.csv", bucket_name)
 
 
 if __name__ == "__main__":
@@ -231,9 +268,16 @@ if __name__ == "__main__":
         standings_df,
         weekly_points_df,
         agg_points_df,
+        season_points_df,
     ) = create_score_df(
         scorecards, weekly_dicts, squad_dict, weeks, owner_team_dict, player_id_dict
     )
     save_outputs(
-        score_df, sum_df, cumsum_df, standings_df, weekly_points_df, agg_points_df
+        score_df,
+        sum_df,
+        cumsum_df,
+        standings_df,
+        weekly_points_df,
+        agg_points_df,
+        season_points_df,
     )
