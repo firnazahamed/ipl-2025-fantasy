@@ -284,6 +284,7 @@ player_id_dict = {
     "Jaydev Unadkat": "390484",
     "Adam Zampa": "379504",
     "Zeeshan Ansari": "942371",
+    "Shardul Thakur": "475281",
 }
 
 service_account_credentials = "credentials/cricinfo-273202-a7420ddc1abd.json"
