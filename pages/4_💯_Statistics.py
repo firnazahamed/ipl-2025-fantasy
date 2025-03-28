@@ -7,7 +7,7 @@ st.set_page_config(layout="wide")
 st.title("Player performance statistics")
 
 unsold_df = read_file(bucket_name, "Unsold_players.csv")
-prices_df = read_file(bucket_name, "2024_price_list.csv")
+prices_df = read_file(bucket_name, "price_list.csv")
 agg_points_df = read_file(bucket_name, "Outputs/agg_points_df.csv")
 
 df = prices_df.merge(agg_points_df, left_on="Player_name", right_on="Name_batting")
@@ -16,7 +16,7 @@ df = df[
         "Player_name",
         "Team",
         "Category",
-        "2024_price",
+        "Price",
         "batting_points",
         "bowling_points",
         "fielding_points",
@@ -24,8 +24,8 @@ df = df[
     ]
 ]
 
-for price in sorted(df["2024_price"].unique(), reverse=True):
-    price_category_df = df[df["2024_price"] == price].sort_values(
+for price in sorted(df["Price"].unique(), reverse=True):
+    price_category_df = df[df["Price"] == price].sort_values(
         "total_points", ascending=False
     )
     st.header(f"{price} Price Category")
