@@ -40,15 +40,15 @@ retentions_list = [
 ]
 
 rtm_list = [
-    "Ruturaj Gaikwad",
+    "Riyan Parag",
     "Virat Kohli",
-    "David Warner",
-    "Rashid Khan",
+    "Nitish Kumar Reddy",
+    "Nicholas Pooran",
     "Glenn Maxwell",
-    "Faf du Plessis",
-    "Shubman Gill",
-    "Kuldeep Yadav",
-    "Wanindu Hasaranga",
+    "Tilak Varma",
+    "Rachin Ravindra",
+    "Sanju Samson",
+    "Travis Head",
 ]
 
 player_id_dict = {
