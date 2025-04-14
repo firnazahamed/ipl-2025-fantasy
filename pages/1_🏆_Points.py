@@ -6,11 +6,17 @@ from settings import bucket_name
 score_df = read_file(bucket_name, "Outputs/score_df.csv").set_index("Owner")
 st.header("Match wise player points for our draft")
 st.subheader("Points for players in our draft including captaincy mutlipliers")
-st.dataframe(score_df)
+st.dataframe(
+    score_df,
+    column_config={
+        "Owner": st.column_config.TextColumn("Owner", pinned=True),
+        "Player": st.column_config.TextColumn("Player", pinned=True),
+    },
+)
 
-sum_df = read_file(bucket_name, "Outputs/sum_df.csv").set_index("Owner")
+sum_df = read_file(bucket_name, "Outputs/sum_df.csv").set_index("Owner").astype(int)
 st.header("Match aggregate points")
-st.dataframe(sum_df)
+st.dataframe(sum_df.style.highlight_max(axis=0).format("{:d}"))
 
 cumsum_df = read_file(bucket_name, "Outputs/cumsum_df.csv").set_index("Owner")
 st.header("Cumulative points")
