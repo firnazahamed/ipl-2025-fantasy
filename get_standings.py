@@ -187,6 +187,7 @@ def create_score_df(
     )
 
     weekly_points_df = score_df[["Owner", "Player"]]
+    weekly_player_points_df = season_points_df[["Owner", "Player"]]
     for week in weeks.keys():
         scores_available = list(
             set(
@@ -200,6 +201,11 @@ def create_score_df(
         if len(scores_available) > 0:
             weekly_points_df[week + "_points"] = (
                 score_df[scores_available].replace(r"^\s*$", 0, regex=True).sum(axis=1)
+            )
+            weekly_player_points_df[week + "_points"] = (
+                season_points_df[scores_available]
+                .replace(r"^\s*$", 0, regex=True)
+                .sum(axis=1)
             )
 
     combined_scorecards = pd.concat([scorecards[k] for k in scorecards.keys()])
@@ -225,6 +231,7 @@ def create_score_df(
         weekly_points_df,
         agg_points_df,
         season_points_df,
+        weekly_player_points_df,
     )
 
 
@@ -236,6 +243,7 @@ def save_outputs(
     weekly_points_df,
     agg_points_df,
     season_points_df,
+    weekly_player_points_df,
 ):
 
     # Save output files locally
@@ -246,6 +254,9 @@ def save_outputs(
     weekly_points_df.to_csv("./Outputs/weekly_points_df.csv", header=True, index=False)
     agg_points_df.to_csv("./Outputs/agg_points_df.csv", header=True, index=False)
     season_points_df.to_csv("./Outputs/season_points_df.csv", header=True, index=False)
+    weekly_player_points_df.to_csv(
+        "./Outputs/weekly_player_points_df.csv", header=True, index=False
+    )
 
     # Save output files to GCS
     upload_df_to_gcs(score_df, f"Outputs/score_df.csv", bucket_name)
@@ -255,6 +266,9 @@ def save_outputs(
     upload_df_to_gcs(weekly_points_df, f"Outputs/weekly_points_df.csv", bucket_name)
     upload_df_to_gcs(agg_points_df, f"Outputs/agg_points_df.csv", bucket_name)
     upload_df_to_gcs(season_points_df, f"Outputs/season_points_df.csv", bucket_name)
+    upload_df_to_gcs(
+        weekly_player_points_df, f"Outputs/weekly_player_points_df.csv", bucket_name
+    )
 
 
 if __name__ == "__main__":
@@ -269,6 +283,7 @@ if __name__ == "__main__":
         weekly_points_df,
         agg_points_df,
         season_points_df,
+        weekly_player_points_df,
     ) = create_score_df(
         scorecards, weekly_dicts, squad_dict, weeks, owner_team_dict, player_id_dict
     )
@@ -280,4 +295,5 @@ if __name__ == "__main__":
         weekly_points_df,
         agg_points_df,
         season_points_df,
+        weekly_player_points_df,
     )
