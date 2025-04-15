@@ -187,7 +187,7 @@ def create_score_df(
     )
 
     weekly_points_df = score_df[["Owner", "Player"]]
-    weekly_player_points_df = season_points_df[["Owner", "Player"]]
+    weekly_player_points_df = season_points_df[["Player"]]
     for week in weeks.keys():
         scores_available = list(
             set(

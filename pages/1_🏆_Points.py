@@ -22,7 +22,17 @@ cumsum_df = read_file(bucket_name, "Outputs/cumsum_df.csv").set_index("Owner")
 st.header("Cumulative points")
 st.dataframe(cumsum_df)
 
+weekly_df = read_file(bucket_name, "Outputs/weekly_points_df.csv").set_index("Owner")
+st.header("Weekly points in our draft")
+st.dataframe(weekly_df)
+
 points_df = read_file(bucket_name, "Outputs/season_points_df.csv").set_index("Player")
 st.header("Match wise player points for all players")
 st.subheader("Points for all players without captaincy multipliers or bench exclusions")
 st.dataframe(points_df)
+
+player_weekly_df = read_file(
+    bucket_name, "Outputs/weekly_player_points_df.csv"
+).set_index("Player")
+st.header("Weekly points for all players")
+st.dataframe(player_weekly_df)
