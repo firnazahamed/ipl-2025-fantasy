@@ -285,6 +285,9 @@ player_id_dict = {
     "Adam Zampa": "379504",
     "Zeeshan Ansari": "942371",
     "Shardul Thakur": "475281",
+    "Dewald Brevis": "1070665",
+    "Smaran Ravichandran": "1327722",
+    "Ayush Mhatre": "1452455",
 }
 
 service_account_credentials = "credentials/cricinfo-273202-a7420ddc1abd.json"

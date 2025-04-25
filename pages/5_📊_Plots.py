@@ -10,6 +10,7 @@ st.set_page_config(page_title="Plots", page_icon="📊")
 
 cumsum_df = read_file(bucket_name, "Outputs/cumsum_df.csv").set_index("Owner")
 sum_df = read_file(bucket_name, "Outputs/sum_df.csv").set_index("Owner")
+cumrank_df = read_file(bucket_name, "Outputs/cumrank_df.csv")
 
 sum_df = sum_df.rename(
     columns={
@@ -24,7 +25,32 @@ cumsum_df = cumsum_df.rename(
 st.header("Draft Standings Race")
 st.line_chart(cumsum_df.T)
 
-st.markdown("#")
+# Draft Standings Evolution Plot
+# Melt into long format
+df_long = cumrank_df.melt(id_vars="Owner", var_name="Match", value_name="Rank")
+df_long["Match"] = df_long["Match"].str.extract(r"(\d+)").astype(int)
+
+# Determine max rank for dynamic scaling
+max_rank = df_long["Rank"].max()
+
+# Create chart with a fixed y-axis domain (1 to max_rank)
+chart = (
+    alt.Chart(df_long)
+    .mark_line(point=True)
+    .encode(
+        x=alt.X("Match:O", title="Match Number"),
+        y=alt.Y(
+            "Rank:Q",
+            title="Draft Standing",
+            scale=alt.Scale(domain=[1, max_rank], reverse=True),
+        ),
+        color="Owner:N",
+    )
+    .properties(width=800, height=500, title="Standings Progression Over Matches")
+)
+
+st.altair_chart(chart, use_container_width=True)
+
 st.header("Player performance")
 st.markdown(
     "Plot shows the points scored by the players excluding the multipliers for captains"

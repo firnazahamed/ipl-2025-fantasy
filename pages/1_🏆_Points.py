@@ -22,6 +22,10 @@ cumsum_df = read_file(bucket_name, "Outputs/cumsum_df.csv").set_index("Owner")
 st.header("Cumulative points")
 st.dataframe(cumsum_df)
 
+cumrank_df = read_file(bucket_name, "Outputs/cumrank_df.csv").set_index("Owner")
+st.header("Cumulative ranking")
+st.dataframe(cumrank_df)
+
 weekly_df = read_file(bucket_name, "Outputs/weekly_points_df.csv").set_index("Owner")
 st.header("Weekly points in our draft")
 st.dataframe(weekly_df)
